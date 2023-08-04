@@ -18,11 +18,8 @@ const processDocumentMove = async (document: WithId<Document>, destCol: Collecti
   return true;
 }
 
-const processSingularSource = async (sourceURI: string, destURI: string, archiveSource: ArchiveSource) => {
+const processSingularSource = async (sourceClient: MongoClient, destClient: MongoClient, archiveSource: ArchiveSource) => {
   const { database, collection, field, archiveDays } = archiveSource;
-
-  const sourceClient = setupMongoConnection(sourceURI);
-  const destClient = setupMongoConnection(destURI);
 
   const srcDB = sourceClient.db(database);
   const destDB = destClient.db(database);
@@ -57,7 +54,7 @@ const processSingularSource = async (sourceURI: string, destURI: string, archive
   }))
 }
 
-const processArchiving = async (sourceURI: string, destURI: string, archiveSources: ArchiveSource[]) => {
+const processArchiving = async (sourceClient: MongoClient, destClient: MongoClient, archiveSources: ArchiveSource[]) => {
   const executors = [...new Array(Math.min(5, archiveSources.length))];
   let i = 0;
   await Promise.all(executors.map(async () => {
@@ -65,7 +62,7 @@ const processArchiving = async (sourceURI: string, destURI: string, archiveSourc
       const archiveSource = archiveSources[i];
       i++;
 
-      await processSingularSource(sourceURI, destURI, archiveSource);
+      await processSingularSource(sourceClient, destClient, archiveSource);
     } while (i < archiveSources.length)
   }));
 }
@@ -73,7 +70,10 @@ const processArchiving = async (sourceURI: string, destURI: string, archiveSourc
 (async () => {
   const archiveConfig = JSON.parse(process.env.ARCHIVE_CONFIGURATION!) as InputSource;
 
-  await processArchiving(archiveConfig.sourceCluster, archiveConfig.destinationCluster, archiveConfig.archiveSources);
+  const sourceClient = setupMongoConnection(archiveConfig.sourceCluster);
+  const destClient = setupMongoConnection(archiveConfig.destinationCluster);
+
+  await processArchiving(sourceClient, destClient, archiveConfig.archiveSources);
 
   process.exit(0);
 })().catch((e) => {
