@@ -10,7 +10,7 @@ const setupMongoConnection = (uri: string): MongoClient => {
 
 const processDocumentMove = async (document: WithId<Document>, destCol: Collection<Document>, database: string, collection: string): Promise<boolean> => {
   try {
-    await destCol.updateOne({ _id: document._id }, document, { upsert: true });
+    await destCol.updateOne({ _id: document._id }, { $set: document }, { upsert: true });
   } catch (e) {
     console.log(`${database}.${collection}: Failed to upsert ${document._id} to the archive DB`, e);
     return false;
