@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "esbuild --format=cjs --outdir=dist `find src -name '*.ts' -not -path '*/node_modules/*'`"
   },
   "repository": {
     "type": "git",
@@ -18,8 +18,10 @@
   },
   "homepage": "https://github.com/northflank/mongodb-archive#readme",
   "dependencies": {
-    "esbuild": "^0.18.17",
     "moment": "^2.29.4",
     "mongodb": "^5.7.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.18.17"
   }
 }
