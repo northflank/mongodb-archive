@@ -32,6 +32,7 @@ const processSingularSource = async (sourceURI: string, destURI: string, archive
 
   const archiveBeforeTS = moment().subtract(archiveDays, 'days').unix();
   const olderDocuments = await srcCol.find({ [field]: { $lt: archiveBeforeTS } }).toArray();
+  console.log(`${database}.${collection}: Found ${olderDocuments.length} to archive`);
 
   // Only process 1 at a time to ensure order
   const executors = [...new Array(1)];

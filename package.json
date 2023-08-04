@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "esbuild --format=cjs --outdir=dist `find src -name '*.ts' -not -path '*/node_modules/*'`"
+    "build": "esbuild --format=cjs --outdir=dist `find src -name '*.ts' -not -path '*/node_modules/*'`",
+    "dev": "esr --cache src/_dev/insertOldDocuments.ts"
   },
   "repository": {
     "type": "git",
@@ -22,6 +23,7 @@
     "mongodb": "^5.7.0"
   },
   "devDependencies": {
-    "esbuild": "^0.18.17"
+    "esbuild": "^0.18.17",
+    "esbuild-runner": "^2.2.2"
   }
 }
