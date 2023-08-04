@@ -30,7 +30,7 @@ const processSingularSource = async (sourceURI: string, destURI: string, archive
   const srcCol = srcDB.collection(collection);
   const destCol = destDB.collection(collection);
 
-  const archiveBeforeTS = moment().subtract(archiveDays, 'days').unix();
+  const archiveBeforeTS = moment().subtract(archiveDays, 'days').toDate();
   const olderDocuments = await srcCol.find({ [field]: { $lt: archiveBeforeTS } }).toArray();
   console.log(`${database}.${collection}: Found ${olderDocuments.length} to archive`);
   if (olderDocuments.length == 0) {
