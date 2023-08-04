@@ -2,8 +2,8 @@ import { MongoClient, WithId, Document, Collection } from "mongodb";
 import { ArchiveSource, InputSource } from "./types";
 import moment from 'moment';
 
-const setupMongoConnection = (uri: string, username?: string, password?: string): MongoClient => {
-  const client = new MongoClient(uri, {auth: {username, password}});
+const setupMongoConnection = (uri: string): MongoClient => {
+  const client = new MongoClient(uri);
   client.connect();
   return client;
 }
