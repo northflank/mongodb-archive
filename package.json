@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build": "esbuild --format=cjs --outdir=dist `find src -name '*.ts' -not -path '*/node_modules/*'`",
-    "dev": "esr --cache src/_dev/insertOldDocuments.ts"
+    "dev": "esr --cache src/_dev/insertOldDocuments.ts",
+    "cfg": "esr --cache src/_dev/config.ts"
   },
   "repository": {
     "type": "git",

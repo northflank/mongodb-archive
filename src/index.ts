@@ -2,7 +2,7 @@ import { MongoClient, WithId, Document, Collection } from "mongodb";
 import { ArchiveSource, InputSource } from "./types";
 import moment from 'moment';
 
-const setupMongoConnection = (uri: string, username: string, password: string): MongoClient => {
+const setupMongoConnection = (uri: string, username?: string, password?: string): MongoClient => {
   const client = new MongoClient(uri, {auth: {username, password}});
   client.connect();
   return client;
@@ -22,7 +22,7 @@ const processSingularSource = async (sourceURI: string, destURI: string, archive
   const { database, collection, field, archiveDays, username, password } = archiveSource;
 
   const sourceClient = setupMongoConnection(sourceURI, username, password);
-  const destClient = setupMongoConnection(destURI, username, password);
+  const destClient = setupMongoConnection(destURI);
 
   const srcDB = sourceClient.db(database);
   const destDB = destClient.db(database);
@@ -33,6 +33,9 @@ const processSingularSource = async (sourceURI: string, destURI: string, archive
   const archiveBeforeTS = moment().subtract(archiveDays, 'days').unix();
   const olderDocuments = await srcCol.find({ [field]: { $lt: archiveBeforeTS } }).toArray();
   console.log(`${database}.${collection}: Found ${olderDocuments.length} to archive`);
+  if (olderDocuments.length == 0) {
+    return;
+  }
 
   // Only process 1 at a time to ensure order
   const executors = [...new Array(1)];
