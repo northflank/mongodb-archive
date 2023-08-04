@@ -9,6 +9,4 @@ export interface ArchiveSource {
   collection: string;
   field: string;
   archiveDays: number;
-  username: string;
-  password: string;
 }

@@ -19,9 +19,9 @@ const processDocumentMove = async (document: WithId<Document>, destCol: Collecti
 }
 
 const processSingularSource = async (sourceURI: string, destURI: string, archiveSource: ArchiveSource) => {
-  const { database, collection, field, archiveDays, username, password } = archiveSource;
+  const { database, collection, field, archiveDays } = archiveSource;
 
-  const sourceClient = setupMongoConnection(sourceURI, username, password);
+  const sourceClient = setupMongoConnection(sourceURI);
   const destClient = setupMongoConnection(destURI);
 
   const srcDB = sourceClient.db(database);
