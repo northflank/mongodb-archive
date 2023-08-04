@@ -74,4 +74,9 @@ const processArchiving = async (sourceURI: string, destURI: string, archiveSourc
   const archiveConfig = JSON.parse(process.env.ARCHIVE_CONFIGURATION!) as InputSource;
 
   await processArchiving(archiveConfig.sourceCluster, archiveConfig.destinationCluster, archiveConfig.archiveSources);
-})().catch(console.error);
+
+  process.exit(0);
+})().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});
