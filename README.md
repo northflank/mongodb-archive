@@ -21,4 +21,4 @@ export interface ArchiveSource {
 
 - `sourceCluster` should be the `MONGO_SRV_ADMIN` of the source cluster which data will be taken from
 - `destinationCluster` should be the `MONGO_SRV_ADMIN` of the archive cluster
-- `archiveSources` is an 
+- `archiveSources` is an array of collections which will have documents archived when `document.[field]` is older than archiveDays
